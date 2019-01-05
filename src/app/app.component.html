@@ -1,0 +1,63 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="container">
+  <div style="text-align:center">
+    <h1>
+      Map
+    </h1>
+  </div>
+
+  
+  <!-- <div>
+    <div>
+      <button [disabled]="isTracking" class="btn btn-primary" (click)="findMe()">Find me</button>
+      <button class="btn btn-primary" (click)="trackMe()">Track me</button>
+    </div>
+    <div class="text-black">
+      <span>Longitude: {{currentLong}}</span>
+      <span>Longitude: {{currentLong}}</span>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-center">
+          <h3>
+              <agm-map [latitude]="lat" [longitude]="lng"></agm-map>
+            <div #gmap style="width:100%;height:300px"></div>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <br>
+  
+   <div class="text-black">
+      <span>Longitude : {{loc}}</span>
+      <span>Longitude: {{loc1}}</span>
+    </div>
+<agm-map 
+[latitude]="lat"
+[longitude]="lng"
+[zoom]="zoom"
+[disableDefaultUI]="false"
+[zoomControl]="false"
+(mapClick)="mapClicked($event)">
+
+<agm-marker 
+    *ngFor="let m of markers; let i = index"
+    (markerClick)="clickedMarker(m.label, i)"
+    [latitude]="m.lat"
+    [longitude]="m.lng"
+    [label]="m.label"
+    [markerDraggable]="m.draggable"
+    (dragEnd)="markerDragEnd(m, $event)">
+    
+  
+</agm-marker>
+</agm-map>
+</div>
+
+<!-- <div>
+    <button [disabled]="isTracking" class="btn btn-primary" (click)="findMe()">Find me</button>
+   <button class="btn btn-primary" (click)="trackMe()">Track me</button> 
+  </div> -->
+
