@@ -1,24 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {MapService} from './service/map.service'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { AgmCoreModule } from '@agm/core';
-
-
+import { HttpClientModule } from '@angular/common/http';
+// import { FormsModule }   from '@angular/forms';
+// import { FormGroup } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 @NgModule({
-  imports:      [
-    BrowserModule,
-    FormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyA3IPPYh8kevGnqsrWqJVPBxBo2zhvml9U'
-    })
+  declarations: [
+    AppComponent
   ],
-  declarations: [ AppComponent],
-  providers: [],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+  ],
+  providers: [MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

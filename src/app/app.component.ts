@@ -1,121 +1,59 @@
-import { Component,ViewChild } from '@angular/core';
-import { MouseEvent } from '@agm/core';
-// import { } from '@types/googlemaps';
+import { Component,OnInit,  } from '@angular/core';
+import * as $ from 'jquery';
+import { log } from 'util';
+import {MapService} from './service/map.service'
+import {FormGroup } from '@angular/forms';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [MapService],
 })
-export class AppComponent {
-  // @ViewChild('gmap') gmapElement: any;
-    // google maps zoom level
-    zoom: number = 8;
-    isTracking = true;
-    loc:any;
-    loc1:any;
-    // currentLat: any;
-    // currentLong: any;
-    // map: google.maps.Map;
-    // marker: google.maps.Marker;
+export class AppComponent implements OnInit{
 
+  mapForm:FormGroup;
+  title = 'map2';
+  position:any;
+  submitted = false;
+  
+  constructor(private map : MapService,private FormGroup : FormGroup) { }
 
-    // initial center position for the map
-    lat: number = 20.5937;
-    lng: number = 78.9629;
-  //20.5937° N, 78.9629° E
-    clickedMarker(label: string, index: number) {
-      console.log(`clicked the marker: ${label || index}`)
-    }
-    
-    mapClicked($event: MouseEvent) {
-      this.markers.push({
-        lat: $event.coords.lat,
-        lng: $event.coords.lng,
-        draggable: true
-      });
-      // this.loc=this.lat;
-      // this.loc1=this.lng;
-    }
-    
-    markerDragEnd(m: marker, $event: MouseEvent) {
-      console.log('dragEnd', m, $event);
-      this.loc=m.lat,m.lng;
-      this.loc1=m.lng;
-    }
-    
-    // findMe() {
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition((position) => {
-    //       this.showPosition(position);
-    //     });
-    //   } else {
-    //     alert("Geolocation is not supported by this browser.");
-    //   }
+  ngAfterViewInit(){
+    this.getLocation();
+   }
+  ngOnInit(){
+    console.log ("My Button Init");
+  } 
+  onSubmit(){
+    // this.submitted = true;
+    // if (this.mapForm.invalid) {
+    //   return;  
     // }
-    // showPosition(position) {
-    //   this.currentLat = position.coords.latitude;
-    //   this.currentLong = position.coords.longitude;
-  
-    //   let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //   this.map.panTo(location);
-  
-    //   if (!this.marker) {
-    //     this.marker = new google.maps.Marker({
-    //       position: location,
-    //       map: this.map,
-    //       title: 'Got you!'
-    //     });
-    //   }
-    //   else {
-    //     this.marker.setPosition(location);
-    //   }
-    // }
-    // trackMe() {
-    //   if (navigator.geolocation) {
-    //     this.isTracking = true;
-    //     navigator.geolocation.watchPosition((position) => {
-    //       this.showTrackingPosition(position);
-    //     });
-    //   } else {
-    //     alert("Geolocation is not supported by this browser.");
-    //   }
-    // }
-    // showTrackingPosition(position) {
-    //   console.log(`tracking postion:  ${position.coords.latitude} - ${position.coords.longitude}`);
-    //   this.currentLat = position.coords.latitude;
-    //   this.currentLong = position.coords.longitude;
-  
-    //   let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //   this.map.panTo(location);
-  
-    //   if (!this.marker) {
-    //     this.marker = new google.maps.Marker({
-    //       position: location,
-    //       map: this.map,
-    //       title: 'Got you!'
-    //     });
-    //   }
-    //   else {
-    //     this.marker.setPosition(location);
-    //   }
-    // }
-    
-    markers: marker[] = [
-      {
-        lat: 20.5937,
-        lng: 78.9629,
-        label: 'A',
-        draggable: true
-      },
-      
-    ]
+    // alert('SUCCESS!!')
+    this.map.getCoordinateInfo(this.position);
   }
-  
-  // just an interface for type safety.
-  interface marker {
-    lat: number;
-    lng: number;
-    label?: string;
-    draggable: boolean;
+  getLocation() {
+    if(navigator.geolocation) 
+    {
+      console.log(navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(this.showPosition);
+    } 
+    else {
+      console.log("Geo Location not supported by browser");
+    }
   }
-  
+  // function that retrieves the position
+  showPosition(position) {
+    var location = {
+      longitude: position.coords.longitude,
+      latitude: position.coords.latitude      
+    }
+    $("#currentLong").html(location.latitude);
+    $("#currentLat").html(position.coords.latitude);
+    alert("Latitude is "+position.coords.latitude);
+    alert("Longitude is "+position.coords.longitude);
+  }
+
+}
